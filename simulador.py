@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 """
 Created on Fri Oct 30 08:47:21 2020
 
@@ -8,18 +8,22 @@ Created on Fri Oct 30 08:47:21 2020
 from tkinter import *
 from tkinter import filedialog as FileDialog
 from tkinter import messagebox as MessageBox
+from tkinter import ttk
 import openpyxl
 
+#ventana principal
 root = Tk()
 root.title("Mi simulador")
 
 
 ruta = "" #almacenar la ruta donde se ubicará el ficherot
 global wb
+global texto
 
 wb = openpyxl.Workbook()
+
 def make_hojas():
-           
+        
         frame= Frame(texto)
         frame.pack()
         frame.config(bg="lightblue")     
@@ -29,28 +33,41 @@ def make_hojas():
        #def test():
             #MessageBox.showinfo(nombre) # título, mensaje
       
-        nh=int(float(numero_hojas.get()))    
-         
+        nh=int(numero_hojas.get())    
         
-       
         def nombrar_hoja():
             
-            nombre =nombre_hoja.get()    
+            global hoja
+            nombre = nombre_hoja.get()    
             print(nombre)
             hoja= wb.create_sheet(nombre)
             print(hoja)
+            return hoja
+            
         
-            return
         c=0 
+        
         while c <= nh-1:
-              nombre_hoja= StringVar()
-              label=Label(frame, text= "incluye el nombre de la hoja").pack()
-              Entry(frame, textvariable= nombre_hoja).pack()
-              Button(frame, text="nombrar_hoja", command= nombrar_hoja).pack()
-              c+=1         
+             """
+             if c==0:
+                  nombre_hdefect =StringVar()
+                  label = Label(frame, text = "cambia el nombre de la hoja creada por defecto").pack()
+                  Entry(frame, texvariable = nombre_hdefect).pack()
+                  nombrehdefect = nombre_hdefect.get()
+                  hojadefec = wb.active
+                  hojadefec.title = nombrehdefect   
+             else:
+             """
+             nombre_hoja= StringVar()
+             label=Label(frame, text= "incluye el nombre de la hoja").pack()
+             Entry(frame, textvariable= nombre_hoja).pack()
+             Button(frame, text="nombrar_hoja", command= nombrar_hoja).pack()     
+             c+=1         
         else:        
               print("final iteracion")
               print(wb.sheetnames)
+              
+             
               
 def crear_excel():
   
@@ -68,17 +85,17 @@ def crear_excel():
     frame.pack(fill="both", expand = "1")
     numero_hojas=StringVar()
 
-#comandos para crear las hojas
     
     label =Label(frame, text ="incluye el numero de hojas").pack()
     Entry(frame, justify=CENTER, textvariable = numero_hojas).pack()
     Button(frame, text="hacer hojas", command=make_hojas).pack()
 
+ 
     return
 
-     
+"""     
 
-"""
+
     se accede a la primera hoja
     a1 = hoja["A1"] # se accede a la columan a fila 1
     print(a1.value)
@@ -130,26 +147,60 @@ def guardar_como():
     pass
 
 
+def inclusion():
+    pass
+
+
+def calculos():
+    pass
+
+def resultados():
+    pass
+
 #Menú superior
 menubar = Menu(root)
-filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="crear_excel",command= crear_excel)
+root.config(menu = menubar)
 
- 
+
+filemenu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="Archivo", menu=filemenu)
+
 filemenu.add_command(label="Abrir", command = abrir)
 filemenu.add_command(label="Guardar", command = guardar)
 filemenu.add_command(label="Guardar_como", command = guardar_como)
 filemenu.add_separator()
 filemenu.add_command(label="Salir", command=root.quit)
-menubar.add_cascade(label="Archivo", menu=filemenu)
+filemenu.add_separator()
+submenucrear=Menu(menubar,tearoff = 0)
+filemenu.add_cascade(label = "crear_excel", menu = submenucrear)
+submenucrear.add_command(label="crear", command = crear_excel)
 
-# Caja de texto central
+
+
+
+submenucrear.add_command(label="hacer_hojas", command = make_hojas)
+submenucrear.add_command(label="calulos", command = calculos)
+
+
+
+
+filemenu2= Menu(menubar, tearoff=0)
+menubar.add_cascade(label="aplicacion", menu=filemenu2)
+
+filemenu2.add_command(label="introducir_datos", command = inclusion)
+filemenu2.add_command(label="calulos", command = calculos)
+filemenu2.add_separator()
+filemenu2.add_command(label="mostrar_resultados", command = resultados)
+
+
+
 texto = Text(root)
 texto.pack(fill='both', expand=1)
 texto.config(padx=6, pady=4, bd=0, font=("Consolas", 12))
 
+root.config(menu = menubar)
 # Menu y bucle de la aplicación
-root.config(menu=menubar)
+#root.config(menu = menubar2)
 
 
 mensaje = StringVar()
